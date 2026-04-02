@@ -12,6 +12,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -25,7 +27,7 @@ public class EmailSenderService {
     @Value("${email.from.name}")
     private String fromName;
 
-    public void sendEmail(EmailQueue email) throws MessagingException, MailException {
+    public void sendEmail(EmailQueue email) throws MessagingException, MailException, UnsupportedEncodingException {
         log.debug("Preparing to send email {} to {}", email.getId(), email.getRecipient());
 
         MimeMessage message = mailSender.createMimeMessage();

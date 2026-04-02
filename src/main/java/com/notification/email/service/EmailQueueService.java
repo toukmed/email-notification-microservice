@@ -148,11 +148,11 @@ public class EmailQueueService {
         email.setStatus(EmailStatus.SENT);
         queueRepository.save(email);
 
-        EmailDeliveryLog log = EmailDeliveryLog.builder()
+        EmailDeliveryLog deliveryLog = EmailDeliveryLog.builder()
                 .email(email)
                 .status(EmailStatus.SENT)
                 .build();
-        deliveryLogRepository.save(log);
+        deliveryLogRepository.save(deliveryLog);
 
         log.info("Email {} sent successfully to {}", email.getId(), email.getRecipient());
     }
@@ -173,12 +173,12 @@ public class EmailQueueService {
 
         queueRepository.save(email);
 
-        EmailDeliveryLog log = EmailDeliveryLog.builder()
+        EmailDeliveryLog deliveryLog = EmailDeliveryLog.builder()
                 .email(email)
                 .status(email.getStatus())
                 .errorMessage(errorMessage)
                 .build();
-        deliveryLogRepository.save(log);
+        deliveryLogRepository.save(deliveryLog);
     }
 
     private EmailResponse mapToResponse(EmailQueue email) {
