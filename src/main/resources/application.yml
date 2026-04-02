@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: email-notification-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/email_service
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTH:false}
+          starttls:
+            enable: ${SMTP_STARTTLS:false}
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
+
+server:
+  port: 8080
+
+email:
+  queue:
+    poll-interval: 5000
+    batch-size: 10
+    max-retries: 3
+    retry-delay-ms: 60000
+  from:
+    address: ${EMAIL_FROM:noreply@example.com}
+    name: ${EMAIL_FROM_NAME:Email Service}
+
+logging:
+  level:
+    com.notification.email: DEBUG
+    org.springframework.mail: DEBUG
